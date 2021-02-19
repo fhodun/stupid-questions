@@ -31,28 +31,28 @@ func main() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID || !strings.HasPrefix(m.Content, cfg.Discord.Prefix) {
+	if m.Author.ID == s.State.User.ID {
 		return
 	}
 
-	// TODO: get prefix value another, more efficient way
-	args := strings.Split(m.Content[(len(cfg.Discord.Prefix)):], ">")
+	content := m.Content
 
-	if len(args) < 3 {
-		s.ChannelMessageDelete(m.ChannelID, m.ID)
-		s.ChannelMessageSend(m.ChannelID, "Too few arguments")
-		return
+	if (strings.Contains(content, "anti")&&strings.Contains(content, "testportal")&&strings.Contains(content, "dziala")&&strings.Contains(content, "?")) {
+		s.ChannelMessageSendReply(m.ChannelID, "zamknij wreszcie p***e", m.Reference())
+	}
+	if (strings.Contains(content, "używam")&&strings.Contains(content, "opera gx")||strings.Contains(content, "opery gx")) {
+		s.ChannelMessageSendReply(m.ChannelID, "chyba z drzewa spadłeś", m.Reference())
+		//s.GuildBanCreateWithReason(m.GuildID, m.Author.ID, "Używanie gównianych przeglądarek", 0)
 	}
 
-	cmd := strings.Trim(args[0], " ")
-	arg := args[1] // first argument
-	msg := args[2] // second argument
-
-	if cmd == "info" {
+	/*switch cmd {
+	case "anti testportal dziala?":
 		s.ChannelMessageSend(m.ChannelID, "dupa")
-	}
-
-	// golang error bypass, need to remove
-	if arg == msg {
-	}
+	case "testshoter dziala?":
+		s.ChannelMessageSend(m.ChannelID, "dupa")
+	case "bot testportal dziala?":
+		s.ChannelMessageSend(m.ChannelID, "dupa")
+	case "opera gx":
+		s.GuildBan(m.GuildID, m.Author.ID)
+	}*/
 }

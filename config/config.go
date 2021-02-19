@@ -21,7 +21,7 @@ func GetConfig() *Config {
 		log.Warn("Unsuccessful loading .env, ", err)
 	}
 
-	token, discordTokenExists := os.LookupEnv("DISCORD_TOKEN")
+	token, tokenExists := os.LookupEnv("DISCORD_TOKEN")
 	prefix, prefixExists := os.LookupEnv("DISCORD_PREFIX")
 	if !tokenExists {
 		log.Fatal("No discord token detected")
@@ -38,7 +38,7 @@ func GetConfig() *Config {
 		}{
 			Token:  token,
 			Prefix: prefix,
-		}
+		},
 	}
 	return config
 }
