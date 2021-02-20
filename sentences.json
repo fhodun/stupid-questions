@@ -1,0 +1,19 @@
+{
+    "sentences": [{
+            "primary": "anti-testportal",
+            "answer": "tak kurwa dziala spierdalaj",
+            "tags": {
+                "weight": 10,
+                "text": "dziala"
+            }
+        },
+        {
+            "primary": "testshoter",
+            "answer": "dopoki wysyla jakies screenshoty mozna uznac ze dziala",
+            "tags": {
+                "weight": 10,
+                "text": "dziala"
+            }
+        }
+    ]
+}
