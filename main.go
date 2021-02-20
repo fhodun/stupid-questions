@@ -39,6 +39,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	cancerWords := []string{ "opera", "testportal" }
 	content := m.Content
 	split := strings.Split(content, " ")
+	// TODO: add punctuation characters deletion e.g. '.' and ','
 	var words []string
 	println("Content words number: ", len(split))
 	for i := 0; i < len(split); i++ {
