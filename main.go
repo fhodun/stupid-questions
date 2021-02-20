@@ -7,6 +7,8 @@ import (
 	"github.com/agnivade/levenshtein"
 	"github.com/bwmarrin/discordgo"
 	"github.com/fhodun/stupid-questions/config"
+	"github.com/fhodun/stupid-questions/utils"
+	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -108,7 +110,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			},
 		},
 	}
-	if cw := GetMessageCancer(m.Content, cancerWords); cw != nil {
+	pureString, err := utils.RemovePolishCharacters(m.Content)
+	if err != nil {
+		logrus.Errorf("Fail removing polish shit %s\n", err.Error())
+		return
+	}
+
+	if cw := GetMessageCancer(pureString, cancerWords); cw != nil {
 		s.ChannelMessageSendReply(m.ChannelID, cw.Answer, m.Reference())
 	}
 }
