@@ -1,122 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"strings"
-
-	"github.com/agnivade/levenshtein"
-	"github.com/bwmarrin/discordgo"
+	"github.com/fhodun/stupid-questions/bot"
 	"github.com/fhodun/stupid-questions/config"
-	"github.com/fhodun/stupid-questions/utils"
+	"github.com/fhodun/stupid-questions/msgp"
 	"github.com/sirupsen/logrus"
-	log "github.com/sirupsen/logrus"
 )
 
-var cfg = config.GetConfig()
-
 func main() {
-	config.InitConfig()
-
-	dg, err := discordgo.New("Bot " + cfg.Discord.Token)
-	if err != nil {
-		log.Fatal("Discord session creation failed")
+	cfg := config.Load()
+	msgp := msgp.MessageParser{
+		Sentences:   cfg.Sentences,
+		MinWeight:   5,
+		MaxDistance: 2,
 	}
-	err = dg.Open()
+
+	bot, err := bot.New(cfg, msgp)
 	if err != nil {
-		log.Fatal("Unsuccessful opening connection")
+		panic(err)
 	}
-	defer dg.Close()
-
-	dg.AddHandler(messageCreate)
-	dg.Identify.Intents = discordgo.IntentsGuildMessages
-
-	log.Info("Bot is now running")
+	defer bot.Close()
+	if err := bot.Open(); err != nil {
+		panic(err)
+	}
+	logrus.Info("Successfully started connection with discord")
 	select {}
-}
-
-type CancerWordTag struct {
-	Weight uint
-	Text   string
-}
-
-// CancerWord is used for defining cancer words
-type CancerWord struct {
-	PrimaryText string
-	Tags        []CancerWordTag
-	Answer      string
-}
-
-const MinWeight uint = 5
-const MaxDistance int = 2
-
-func SmartStringContains(str string, substr string) bool {
-	for i := 0; i < len(str)-len(substr); i++ {
-		if levenshtein.ComputeDistance(substr, str[i:i+len(substr)]) < MaxDistance {
-			return true
-		}
-	}
-
-	return false
-}
-
-func GetMessageCancer(str string, cancerWords []CancerWord) *CancerWord {
-	words := strings.Split(str, " ")
-
-	for _, cw := range cancerWords {
-		if !SmartStringContains(str, cw.PrimaryText) {
-			continue
-		}
-
-		w := uint(0)
-		hasAnyTag := false
-
-		for _, word := range words {
-			if word == cw.PrimaryText {
-				continue
-			}
-			for _, tag := range cw.Tags {
-				fmt.Printf("distance: %d from %s to %s\n", levenshtein.ComputeDistance(word, tag.Text), word, tag.Text)
-				if distance := levenshtein.ComputeDistance(word, tag.Text); distance < MaxDistance {
-					hasAnyTag = true
-					w += tag.Weight
-					if w > MinWeight {
-						return &cw
-					}
-				}
-			}
-		}
-		if !hasAnyTag {
-			return nil
-		}
-		fmt.Printf("w: %d\n", w)
-	}
-	return nil
-}
-
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.ID == s.State.User.ID {
-		return
-	}
-
-	cancerWords := []CancerWord{
-		{
-			PrimaryText: "anti-testportal",
-			Answer:      "tak kurwa dziala spierdalaj",
-			Tags: []CancerWordTag{
-				{
-					Weight: 10,
-					Text:   "dziala",
-				},
-			},
-		},
-	}
-	pureString, err := utils.RemovePolishCharacters(m.Content)
-	if err != nil {
-		logrus.Errorf("Fail removing polish shit %s\n", err.Error())
-		return
-	}
-
-	if cw := GetMessageCancer(pureString, cancerWords); cw != nil {
-		s.ChannelMessageSendReply(m.ChannelID, cw.Answer, m.Reference())
-	}
 }
