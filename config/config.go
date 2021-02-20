@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/fhodun/stupid-questions/msgp"
+	"github.com/fhodun/stupid-questions/qp"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
@@ -11,7 +11,7 @@ import (
 // Config dupa
 type Config struct {
 	DiscordToken string
-	Sentences    []msgp.Sentence
+	Sentences    []qp.Sentence
 }
 
 func mustGetEnv(key string) string {
@@ -29,11 +29,11 @@ func Load() Config {
 	}
 
 	// Figure out some better way to load those, maybe JSON file since they're too complex for .env files
-	sentences := []msgp.Sentence{
+	sentences := []qp.Sentence{
 		{
 			PrimaryWord: "anti-testportal",
 			Answer:      "tak kurwa dziala spierdalaj",
-			Tags: []msgp.SentenceTag{
+			Tags: []qp.SentenceTag{
 				{
 					Weight: 10,
 					Text:   "dziala",

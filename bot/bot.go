@@ -5,21 +5,21 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/fhodun/stupid-questions/config"
-	"github.com/fhodun/stupid-questions/msgp"
+	"github.com/fhodun/stupid-questions/qp"
 	"github.com/fhodun/stupid-questions/utils"
 	"github.com/sirupsen/logrus"
 )
 
 type Bot struct {
-	cfg       config.Config
-	msgParser msgp.MessageParser
-	session   *discordgo.Session
+	cfg     config.Config
+	qp      qp.QuestionParser
+	session *discordgo.Session
 }
 
-func New(cfg config.Config, msgParser msgp.MessageParser) (Bot, error) {
+func New(cfg config.Config, qp qp.QuestionParser) (Bot, error) {
 	bot := Bot{
-		cfg:       cfg,
-		msgParser: msgParser,
+		cfg: cfg,
+		qp:  qp,
 	}
 
 	var err error
@@ -57,7 +57,7 @@ func (bot Bot) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
 		return
 	}
 
-	if cw := bot.msgParser.ParseString(pureString); cw != nil {
+	if cw := bot.qp.ParseString(pureString); cw != nil {
 		s.ChannelMessageSendReply(m.ChannelID, cw.Answer, m.Reference())
 	}
 }
