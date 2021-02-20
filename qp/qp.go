@@ -7,24 +7,27 @@ import (
 	"github.com/fhodun/stupid-questions/utils"
 )
 
+// SentenceTag dupa
 type SentenceTag struct {
 	Weight uint
 	Text   string
 }
 
-// Word is used for defining banned words
+// Sentence dupa, word is used for defining banned words
 type Sentence struct {
 	PrimaryWord string
 	Tags        []SentenceTag
 	Answer      string
 }
 
+// QuestionParser dupa
 type QuestionParser struct {
 	Sentences   []Sentence
 	MinWeight   uint
 	MaxDistance int
 }
 
+// ParseString dupa
 func (qp QuestionParser) ParseString(str string) *Sentence {
 	// Split words by space
 	words := strings.Split(str, " ")
