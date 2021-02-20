@@ -14,6 +14,7 @@ type Config struct {
 	Sentences    []qp.Sentence
 }
 
+// mustGetEnv dupa
 func mustGetEnv(key string) string {
 	env, exists := os.LookupEnv(key)
 	if !exists {
@@ -22,13 +23,14 @@ func mustGetEnv(key string) string {
 	return env
 }
 
+// Load dupa
 func Load() Config {
 	err := godotenv.Load()
 	if err != nil {
 		log.Warn("Fail loading .env file", err)
 	}
 
-	// Figure out some better way to load those, maybe JSON file since they're too complex for .env files
+	// TODO: figure out some better way to load those, maybe JSON file since they're too complex for .env files
 	sentences := []qp.Sentence{
 		{
 			PrimaryWord: "anti-testportal",
