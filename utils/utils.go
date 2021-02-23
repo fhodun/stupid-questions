@@ -1,13 +1,15 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/agnivade/levenshtein"
 	"golang.org/x/text/runes"
 	"golang.org/x/text/transform"
 	"golang.org/x/text/unicode/norm"
 )
 
-// LebenshteinStringContains dupa
+// LevenshteinStringContains dupa
 func LevenshteinStringContains(str string, substr string, maxDistance int) bool {
 	for i := 0; i < len(str)-len(substr); i++ {
 		if levenshtein.ComputeDistance(substr, str[i:i+len(substr)]) < maxDistance {
@@ -42,13 +44,15 @@ func RemoveUnwantedCharacters(str string) (string, error) {
 				return 'z'
 			case 'ź':
 				return 'z'
-			case '?':
-				return ' '
 			}
 			return r
 		}),
 		norm.NFC,
 	)
 	res, _, err := transform.String(trans, str)
+
+	// Remove question marks from parsed sentence
+	res = strings.Replace(res, "?", "", -1)
+
 	return res, err
 }
