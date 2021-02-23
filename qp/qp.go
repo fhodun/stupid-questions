@@ -29,6 +29,10 @@ type QuestionParser struct {
 
 // ParseString dupa
 func (qp QuestionParser) ParseString(str string) *Sentence {
+	if !strings.Contains(str, "?") {
+		return nil
+	}
+
 	// Split words by space
 	words := strings.Split(str, " ")
 
