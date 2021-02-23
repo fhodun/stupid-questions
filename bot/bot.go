@@ -6,6 +6,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/fhodun/stupid-questions/config"
 	"github.com/fhodun/stupid-questions/qp"
+	"github.com/sirupsen/logrus"
 )
 
 // Bot dupa
@@ -51,9 +52,17 @@ func (bot Bot) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	fmt.Printf("Received msg: %s\n", m.Content)
+	logrus.WithFields(logrus.Fields{
+		"msg": m.Content,
+		"ID":  m.ID,
+	}).Infoln("Received message")
 
 	if cw := bot.qp.ParseString(m.Content); cw != nil {
+		logrus.WithFields(logrus.Fields{
+			"msg":    m.Content,
+			"answer": cw.Answer,
+			"ID":     m.ID,
+		}).Infoln("Sending answer")
 		s.ChannelMessageSendReply(m.ChannelID, cw.Answer, m.Reference())
 	}
 }
