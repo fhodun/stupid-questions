@@ -30,7 +30,7 @@ func Load() Config {
 		logrus.Warn("Fail loading .env file", err)
 	}
 
-	// TODO: figure out some better way to load those, maybe JSON file
+	// TODO: figure out some better way to load those, maybe JSON file since they're too complex for .env files
 	sentences := []qp.Sentence{
 		{
 			PrimaryWord: "anti-testportal",
