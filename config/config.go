@@ -5,7 +5,7 @@ import (
 
 	"github.com/fhodun/stupid-questions/qp"
 	"github.com/joho/godotenv"
-	log "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 // Config dupa
@@ -18,7 +18,7 @@ type Config struct {
 func mustGetEnv(key string) string {
 	env, exists := os.LookupEnv(key)
 	if !exists {
-		log.Fatalf("'%s' env not present in .env", key)
+		logrus.Fatalf("'%s' env not present in .env", key)
 	}
 	return env
 }
@@ -27,7 +27,7 @@ func mustGetEnv(key string) string {
 func Load() Config {
 	err := godotenv.Load()
 	if err != nil {
-		log.Warn("Fail loading .env file", err)
+		logrus.Warn("Fail loading .env file", err)
 	}
 
 	// TODO: figure out some better way to load those, maybe JSON file since they're too complex for .env files

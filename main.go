@@ -14,7 +14,7 @@ func main() {
 		MinWeight:   5,
 		MaxDistance: 2,
 	}
-
+	// TODO: add detecting bad copied quizizz console scripts
 	bot, err := bot.New(cfg, qp)
 	if err != nil {
 		panic(err)
