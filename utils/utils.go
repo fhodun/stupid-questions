@@ -52,7 +52,7 @@ func RemoveUnwantedCharacters(str string) (string, error) {
 	res, _, err := transform.String(trans, str)
 
 	// Remove question marks from parsed sentence
-	res = strings.Replace(res, "?", "", -1)
+	res = strings.ReplaceAll(res, "?", "")
 
 	return res, err
 }
