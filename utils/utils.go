@@ -7,6 +7,7 @@ import (
 	"golang.org/x/text/unicode/norm"
 )
 
+// LebenshteinStringContains dupa
 func LevenshteinStringContains(str string, substr string, maxDistance int) bool {
 	for i := 0; i < len(str)-len(substr); i++ {
 		if levenshtein.ComputeDistance(substr, str[i:i+len(substr)]) < maxDistance {
@@ -17,7 +18,8 @@ func LevenshteinStringContains(str string, substr string, maxDistance int) bool 
 	return false
 }
 
-func RemovePolishCharacters(str string) (string, error) {
+// RemoveUnwantedCharacters dupa
+func RemoveUnwantedCharacters(str string) (string, error) {
 	trans := transform.Chain(
 		norm.NFD,
 		runes.Map(func(r rune) rune {
@@ -40,6 +42,8 @@ func RemovePolishCharacters(str string) (string, error) {
 				return 'z'
 			case 'ź':
 				return 'z'
+			case '?':
+				return ' '
 			}
 			return r
 		}),
