@@ -6,8 +6,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/fhodun/stupid-questions/config"
 	"github.com/fhodun/stupid-questions/qp"
-	"github.com/fhodun/stupid-questions/utils"
-	"github.com/sirupsen/logrus"
 )
 
 // Bot dupa
@@ -55,13 +53,7 @@ func (bot Bot) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
 	}
 	fmt.Printf("Received msg: %s\n", m.Content)
 
-	pureString, err := utils.RemovePolishCharacters(m.Content)
-	if err != nil {
-		logrus.Errorf("Fail removing polish shit %s\n", err.Error())
-		return
-	}
-
-	if cw := bot.qp.ParseString(pureString); cw != nil {
+	if cw := bot.qp.ParseString(m.Content); cw != nil {
 		s.ChannelMessageSendReply(m.ChannelID, cw.Answer, m.Reference())
 	}
 }

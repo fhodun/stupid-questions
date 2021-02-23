@@ -5,6 +5,7 @@ import (
 
 	"github.com/agnivade/levenshtein"
 	"github.com/fhodun/stupid-questions/utils"
+	"github.com/sirupsen/logrus"
 )
 
 // SentenceTag dupa
@@ -31,6 +32,11 @@ type QuestionParser struct {
 func (qp QuestionParser) ParseString(str string) *Sentence {
 	if !strings.Contains(str, "?") {
 		return nil
+	}
+
+	str, err := utils.RemoveUnwantedCharacters(str)
+	if err != nil {
+		logrus.Errorf("Fail removing polish shit %s\n", err.Error())
 	}
 
 	// Split words by space
