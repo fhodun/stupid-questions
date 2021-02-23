@@ -34,7 +34,7 @@ func Load() Config {
 	sentences := []qp.Sentence{
 		{
 			PrimaryWord: "anti-testportal",
-			Answer:      "tak kurwa dziala spierdalaj",
+			Answer:      "tak kurwa dziala",
 			Tags: []qp.SentenceTag{
 				{
 					Weight: 10,

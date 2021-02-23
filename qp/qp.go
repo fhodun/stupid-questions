@@ -51,6 +51,9 @@ func (qp QuestionParser) ParseString(str string) *Sentence {
 		if !utils.LevenshteinStringContains(str, sentence.PrimaryWord, qp.MaxDistance) {
 			continue
 		}
+		if len(sentence.Tags) == 0 {
+			return &sentence
+		}
 
 		// Set weight, that will determine if message is stupid enough to respond it
 		weight := uint(0)
