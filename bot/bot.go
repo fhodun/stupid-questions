@@ -10,12 +10,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Bot dupa
 type Bot struct {
 	cfg     config.Config
 	qp      qp.QuestionParser
 	session *discordgo.Session
 }
 
+// New dupa
 func New(cfg config.Config, qp qp.QuestionParser) (Bot, error) {
 	bot := Bot{
 		cfg: cfg,
@@ -30,6 +32,7 @@ func New(cfg config.Config, qp qp.QuestionParser) (Bot, error) {
 	return bot, nil
 }
 
+// Open dupa
 func (bot Bot) Open() error {
 	err := bot.session.Open()
 	if err != nil {
@@ -41,6 +44,7 @@ func (bot Bot) Open() error {
 	return nil
 }
 
+// Close dupa
 func (bot Bot) Close() {
 	bot.session.Close()
 }
@@ -49,7 +53,7 @@ func (bot Bot) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	fmt.Printf("Received msg:%s\n ", m.Content)
+	fmt.Printf("Received msg: %s\n ", m.Content)
 
 	pureString, err := utils.RemovePolishCharacters(m.Content)
 	if err != nil {
