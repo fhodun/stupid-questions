@@ -11,12 +11,11 @@ import (
 
 // LevenshteinStringContains dupa
 func LevenshteinStringContains(str string, substr string, maxDistance int) bool {
-	for i := 0; i < len(str)-len(substr); i++ {
+	for i := 0; i < len(str)-len(substr)+1; i++ {
 		if levenshtein.ComputeDistance(substr, str[i:i+len(substr)]) < maxDistance {
 			return true
 		}
 	}
-
 	return false
 }
 
