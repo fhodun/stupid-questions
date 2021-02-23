@@ -53,7 +53,7 @@ func (bot Bot) onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate)
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
-	fmt.Printf("Received msg: %s\n ", m.Content)
+	fmt.Printf("Received msg: %s\n", m.Content)
 
 	pureString, err := utils.RemovePolishCharacters(m.Content)
 	if err != nil {
