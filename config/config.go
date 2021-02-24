@@ -28,17 +28,41 @@ func Load() Config {
 	err := godotenv.Load()
 	if err != nil {
 		logrus.Warn("Fail loading .env file", err)
-	}
 
+	}
 	// TODO: figure out some better way to load those, maybe JSON file since they're too complex for .env files
 	sentences := []qp.Sentence{
 		{
-			PrimaryWord: "anti-testportal",
+			PrimaryWord: "dziala",
 			Answer:      "tak kurwa dziala",
 			Tags: []qp.SentenceTag{
 				{
 					Weight: 10,
-					Text:   "dziala",
+					Text:   "testportal",
+				},
+				{
+					Weight: 10,
+					Text:   "anti testportal",
+				},
+				{
+					Weight: 10,
+					Text:   "anty testportal",
+				},
+				{
+					Weight: 10,
+					Text:   "anti-testportal",
+				},
+				{
+					Weight: 10,
+					Text:   "wtyczka",
+				},
+				{
+					Weight: 10,
+					Text:   "nadal",
+				},
+				{
+					Weight: 10,
+					Text:   "jeszcze",
 				},
 			},
 		},
