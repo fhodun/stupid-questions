@@ -18,9 +18,11 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN go build -o /bin/app ./cmd/auth/main.go
+RUN go build -o /bin/app ./main.go
 
 FROM scratch
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /bin/app  /
+
 
 ENTRYPOINT ["/app"]

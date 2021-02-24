@@ -25,11 +25,18 @@ func mustGetEnv(key string) string {
 
 // Load dupa
 func Load() Config {
-	err := godotenv.Load()
-	if err != nil {
-		logrus.Warn("Fail loading .env file", err)
+	_, isDocker := os.LookupEnv("DOCKER")
 
+	if isDocker {
+		logrus.Infoln("Docker enviroment detected")
+	} else {
+		logrus.Infoln("Docker enviroment not detected")
+		err := godotenv.Load()
+		if err != nil {
+			logrus.Fatalf("Fail loading .env file", err)
+		}
 	}
+
 	// TODO: figure out some better way to load those, maybe JSON file since they're too complex for .env files
 	sentences := []qp.Sentence{
 		{

@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  bot:
+    tty: true
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    environment:
+      # Go doesnt want to detect env var without values, but it can be any value
+      - DOCKER=y
+    env_file:
+      - .env
