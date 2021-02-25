@@ -71,6 +71,14 @@ func Load() Config {
 					Weight: 10,
 					Text:   "jeszcze",
 				},
+				{
+					Weight: 10,
+					Text:   "?",
+				},
+				{
+					Weight: -10,
+					Text:   "tak",
+				},
 			},
 		},
 	}

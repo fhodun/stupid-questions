@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"strings"
-
 	"github.com/agnivade/levenshtein"
 	"golang.org/x/text/runes"
 	"golang.org/x/text/transform"
@@ -19,8 +17,8 @@ func LevenshteinStringContains(str string, substr string, maxDistance int) bool 
 	return false
 }
 
-// RemoveUnwantedCharacters dupa
-func RemoveUnwantedCharacters(str string) (string, error) {
+// RemovePolishCharacters dupa
+func RemovePolishCharacters(str string) (string, error) {
 	trans := transform.Chain(
 		norm.NFD,
 		runes.Map(func(r rune) rune {
@@ -49,9 +47,6 @@ func RemoveUnwantedCharacters(str string) (string, error) {
 		norm.NFC,
 	)
 	res, _, err := transform.String(trans, str)
-
-	// Remove question marks from parsed sentence
-	res = strings.ReplaceAll(res, "?", "")
 
 	return res, err
 }

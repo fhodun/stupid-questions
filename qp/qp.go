@@ -10,7 +10,7 @@ import (
 
 // SentenceTag dupa
 type SentenceTag struct {
-	Weight uint
+	Weight int
 	Text   string
 }
 
@@ -24,23 +24,43 @@ type Sentence struct {
 // QuestionParser dupa
 type QuestionParser struct {
 	Sentences   []Sentence
-	MinWeight   uint
+	MinWeight   int
 	MaxDistance int
+}
+
+func splitWords(str string) []string {
+	words := make([]string, 0)
+
+	last := 0
+	for i, c := range str {
+		if c == ' ' || c == '?' {
+			word := strings.TrimSpace(str[last:i])
+			if len(word) == 0 {
+				continue
+			}
+			words = append(words, word)
+			last = i + 1
+		}
+		if c == '?' {
+			words = append(words, "?")
+		}
+	}
+	lastWord := str[last:]
+	if len(lastWord) > 0 {
+		words = append(words, str[last:])
+	}
+
+	return words
 }
 
 // ParseString dupa
 func (qp QuestionParser) ParseString(str string) *Sentence {
-	if !strings.Contains(str, "?") {
-		return nil
-	}
-
-	str, err := utils.RemoveUnwantedCharacters(str)
+	str, err := utils.RemovePolishCharacters(str)
 	if err != nil {
 		logrus.Errorf("Fail removing polish shit %s\n", err.Error())
 	}
 
-	// Split words by space
-	words := strings.Split(str, " ")
+	words := splitWords(str)
 
 	for _, sentence := range qp.Sentences {
 		// Check if string containts primary word
@@ -56,7 +76,7 @@ func (qp QuestionParser) ParseString(str string) *Sentence {
 		}
 
 		// Set weight, that will determine if message is stupid enough to respond it
-		weight := uint(0)
+		weight := 0
 
 		// Loop over every word in message
 		for _, word := range words {
